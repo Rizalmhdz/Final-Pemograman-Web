@@ -50,10 +50,6 @@ if(isset($_POST['login'])){
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Assassin's Creed</title>
-<!-- 
-Journey Template 
-http://www.templatemo.com/tm-511-journey
--->
     <!-- load stylesheets -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
@@ -88,16 +84,13 @@ http://www.templatemo.com/tm-511-journey
                             <div id="mainNav" class="collapse navbar-collapse tm-bg-white">
                                 <ul class="navbar-nav ml-auto">
                                   <li class="nav-item">
-                                    <a class="nav-link active" href="#top">Home <span class="sr-only">(current)</span></a>
+                                    <a class="nav-link active" href="#top">Login <span class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-2">Walkthrough</a>
+                                    <a class="nav-link" href="signup.php">Sign Up</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-3">price</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-4">Logout</a>
+                                    <a class="nav-link" href="#about">About</a>
                                 </li>
                             </ul>
                         </div>                            
@@ -162,18 +155,26 @@ http://www.templatemo.com/tm-511-journey
                             </form>                             
 
                         </div> <!-- row -->
-                        <div class="tm-banner-overlay"></div>
+                        <div class="tm-banner-overlay" ></div>
                     </div>  <!-- .container -->                   
                 </div>     <!-- .tm-container-outer -->                 
             </section>
 
-            <section class="p-5 tm-container-outer tm-bg-gray">            
+            <section class="p-5 tm-container-outer tm-bg-gray" id="about">            
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12 mx-auto tm-about-text-wrap text-center">                        
-                            <h2 class="text-uppercase mb-4">Your <strong>Journey</strong> is our priority</h2>
-                            <p class="mb-4">Nullam auctor, sapien sit amet lacinia euismod, lorem magna lobortis massa, in tincidunt mi metus quis lectus. Duis nec lobortis velit. Vivamus id magna vulputate, tempor ante eget, tempus augue. Maecenas ultricies neque magna.</p>
-                            <a href="#" class="text-uppercase btn-primary tm-btn">Continue explore</a>                              
+                        <div class="col-xs-12 mx-auto tm-about-text-wrap text-center" >                        
+                            <h2 class="text-uppercase mb-4"> <strong>About</strong> this game</h2>
+                            <p class="mb-4">Assassin Creed adalah seri permainan video aksi-petualangan dan penyelinapan yang dibuat oleh Patrice Désilets, Jade Raymond, dan Corey May; dikembangkan dan diterbitkan oleh Ubisoft menggunakan game engine Anvil. Seri permainan ini menggambarkan pertarungan di antara Assassin, yang memperjuangkan perdamaian dengan kehendak bebas, dan Templar, yang menginginkan perdamaian melalui di bawah kekuasaan. Seri permainan ini menampilkan fiksi sejarah, fiksi sains, dan tokoh-tokoh fiktif, yang dipadukan dengan peristiwa dan tokoh-tokoh sejarah. Pemain akan mengontrol tokoh Assassin di masa lampau lebih sering, sementara mereka dapat pula bermain sebagai Desmond Miles atau Assassin Initiate di masa kini, yang memburu target-target Templar.
+
+                                            <br><br>Cerita dari seri permainan video ini terinspirasi dari novel Almaut oleh penulis Slovenia Vladimir Bartol,[1] sementara konsep permainan dibentuk dari seri Prince of Persia.[2] Seri permainan ini dimulai dengan permainan berjudul sama pada tahun 2007, dan telah menghadirkan sebelas permainan utama. Permainan yang dirilis baru-baru ini adalah Assassin's Creed Odyssey pada tahun 2018.
+
+                                            <br><br>Cerita dan periode waktu yang baru diperkenalkan di setiap entri, dan elemen dari cara bermain berkembang dari versi sebelumnya. Terdapat dua kumpulan cerita di dalam seri ini. Untuk lima permainan utama yang pertama, cerita berlatar pada tahun 2012 dan menampilkan tokoh utama Desmond Miles yang menggunakan mesin yang bernama Animus dan menghidupkan kembali memori pendahulunya untuk mencari cara untuk mencegah kemusnahan massal pada tahun 2012. Dalam permainan berikutnya hingga Assassin's Creed Syndicate, pegawan Abstergo dan relawan Assassin menghidupkan kembali rekaman memori genetik menggunakan perangkat lunak Helix, yang membantu para Templar dan Assassin menemukan Piece of Eden yang baru di dunia modern. Pada dua judul permainan terbaru, yakni Assassin's Creed Origins dan Assassin's Creed Odyssey, protagonis untuk masa kini adalah Layla Hassan, seorang mantan pegawai Abstergo yang direkrut ke dalam Ordo Assassin.
+
+                                            <br><br>Permainan utama dari Assassin's Creed berlatar di dunia terbuka dan ditampilkan dari sudut pandang orang ketiga di mana para protagonis menjatuhkan lawan menggunakan keterampilan bertempur dan menyelinap dengan eksploitasi lingkungan. Pemain memiliki kebebasan untuk menjelajahi latar historis sambil menyelesaikan misi utama dan sampingan. Di samping misi pemain tunggal, beberapa permainan juga menyediakan permainan multi-pemain kompetitif dan kooperatif. Sementara permainan utama dibuat untuk platform konsol dan desktop utama, beberapa permainan sampingan juga dirilis bersamaan untuk platform konsol, mobile, dan perangkat genggam.
+
+                                            <br><br>Permainan utama pada seri permainan video Assassin's Creed telah menerima banyak tanggapan positif atas ambisinya dalam mengembangkan visual, desain permainan, dan cerita naratif, dengan kritikan tentang siklus rilis tahunan dan bug yang sering muncul. Permainan spin-off menerima tanggapan sedang hingga positif. Seri permainan video ini telah menerima berbagai penghargaan dan nominasi, termasuk penghargaan Game of the Year. Seri permainan video ini juga sukses secara komersial karena menjual lebih dari 100 juta kopi per bulan September 2016, menjadi seri terlaris yang pernah dibuat oleh Ubisoft dan menjadi salah satu seri permainan video dengan penjualan tertinggi sepanjang masa. Assassin's Creed diadaptasi ke dalam film yang berjudul sama, yang menerima tanggapan negatif. Seri permainan ini juga diterbitkan dalam bentuk buku seni, ensiklopedia, komik, novelisasi, dan novel. Semua media berlatar dalam kontinuitas yang sama dengan seri permainan video utama.
+                        </p><a href="#" class="text-uppercase btn-primary tm-btn">Continue explore</a>                              
                         </div>
                     </div>
                 </div>            
