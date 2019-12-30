@@ -1,49 +1,26 @@
-
 <?php
-    session_start();
-    include("koneksi.php");
 
-    if(isset($_POST['login'])){
+    require_once "koneksi.php";
+    session_start();
+    if(isset($_REQUEST['display_id']))
+    {
         try
         {
-
-    $username = $_POST['username']; //get "update_id" from index.php page through anchor tag operation and store in "$id" variable
-    $pass = $_POST['password'];
-            $select_stmt = $db->prepare('SELECT * FROM akun WHERE username =:id and pw =:pass'); //sql select query
-            $select_stmt->bindParam(':id',$username);
-            $select_stmt->bindParam(':pass',$pass);
+            $id = $_REQUEST['display_id']; //get "display_id" from index.php page through anchor tag operation and store in "$id" variable
+            $select_stmt = $db->prepare('SELECT * FROM seri_game WHERE id_game =:id'); //sql select query
+            $select_stmt->bindParam(':id',$id);
             $select_stmt->execute(); 
-
             $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
-
-            if(!empty($row)) { 
-                    
-                $_SESSION['username'] = $username;
-                $_SESSION['user'] = $row['status'];
-                $insertMsg="login berhasil";
-                echo "<script type='text/javascript'>window.location.href = 'index copy.php' ; </script>";
-
-
-            }
-            else if ($_POST['username'] =="" || $_POST['password'] == ""){
-                $errorMsg="masukkan username dan password!";
-
-            }
-
-            else {
-                $errorMsg="Username atau password yang anda masukkan salah!";
-
-            }
+            extract($row);
+        }
+        catch(PDOException $e)
+        {
+            $e->getMessage();
+        }
         
     }
-    catch(PDOException $e)
-    {
-        $e->getMessage();
-    }
-
-    }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +28,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Assassin's Creed</title>
+    <title>Journey HTML CSS Template</title>
 <!-- 
 Journey Template 
 http://www.templatemo.com/tm-511-journey
@@ -63,7 +40,8 @@ http://www.templatemo.com/tm-511-journey
     <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
     <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-    <link rel="stylesheet" type="text/css" href="css/Home.css"/>                             <!-- Templatemo style -->
+    <link rel="stylesheet" type="text/css" href="css/Home.css"/>
+    <!-- <link rel="stylesheet" href="css/templatemo-style.css">                                   Templatemo style -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -81,7 +59,7 @@ http://www.templatemo.com/tm-511-journey
                     <div class="row">
                         <nav class="navbar navbar-expand-lg narbar-light">
                             <a class="navbar-brand mr-auto" href="#">
-                                <img src="img/a.png" alt="Site logo">
+                                <img src="img/a.png" alt="Site logo" style="padding-right:5px">
                                 Assassin's Creed
                             </a>
                             <button type="button" id="nav-toggle" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,13 +71,13 @@ http://www.templatemo.com/tm-511-journey
                                     <a class="nav-link active" href="#top">Home <span class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-2">Walkthrough</a>
+                                    <a class="nav-link" href="#tm-section-2">Top Destinations</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-3">price</a>
+                                    <a class="nav-link" href="#tm-section-3">Recommended Places</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-4">Logout</a>
+                                    <a class="nav-link" href="#tm-section-4">Contact Us</a>
                                 </li>
                             </ul>
                         </div>                            
@@ -109,7 +87,7 @@ http://www.templatemo.com/tm-511-journey
         </div> <!-- .tm-top-bar -->
 
         <div class="tm-page-wrap mx-auto">
-            <section class="tm-banner">
+        <section class="tm-banner">
                 <div class="tm-container-outer tm-banner-bg">
                     <div class="container">
 
@@ -118,69 +96,303 @@ http://www.templatemo.com/tm-511-journey
                                 <div class="tm-banner-header">
                                     <h1 class="text-uppercase tm-banner-title">Let's begin</h1>
                                     <img src="img/dots-3.png" alt="Dots">
-                                    <p class="tm-banner-subtitle">We assist you to get a great gameplay.</p>
+                                    <p class="tm-banner-subtitle">We assist you to choose the best.</p>
                                     <a href="javascript:void(0)" class="tm-down-arrow-link"><i class="fa fa-2x fa-angle-down tm-down-arrow"></i></a>       
                                 </div>    
                             </div>  <!-- col-xs-12 -->                      
                         </div> <!-- row -->
-                        
-
-                        <div class="row tm-banner-row" id="tm-section-search">
-                            <form method="POST" class="tm-search-form tm-section-pad-2">
-                            <div class="form-row tm-search-form-row">  <?php
-                            if(isset($errorMsg))
-                            {
-                                ?>
-                                <div class="alert alert-danger">
-                                    <strong>UPS! <?php echo $errorMsg; ?></strong>
-                                </div>
-                                <?php
-                            }
-                            if(isset($insertMsg)){
-                            ?>
-                                <div class="alert alert-success">
-                                    <strong>SUCCESS! <?php echo $insertMsg; ?></strong>
-                                </div>
-                            <?php
-                            }
-                            ?> 
-                            </div>
-                                <div class="form-row tm-search-form-row">                                
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                                        <label for="inputCity">Username</label>
-                                        <input name="username" type="text" class="form-control" placeholder="Type your username...">
-                                    </div>
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                                        <label for="inputCity">Password</label>
-                                        <input name="password" type="password" class="form-control" placeholder="Type your password...">
-                                    </div>
-                                    
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                                    </div>
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                                        <button name="login" type="submit" class="btn btn-primary tm-btn tm-btn-search text-uppercase" value="login">Login</button>
-                                    </div>
-                                </div>                              
-                            </form>                             
-
-                        </div> <!-- row -->
                         <div class="tm-banner-overlay"></div>
                     </div>  <!-- .container -->                   
                 </div>     <!-- .tm-container-outer -->                 
-            </section>
+        </section>
+        
+            <div class="tm-container-outer" id="tm-section-3">
+                <ul class="nav nav-pills tm-tabs-links">
+                    <li class="tm-tab-link-li">
+                        <a href="#1a" data-toggle="tab" class="tm-tab-link active"><!-- Current Active Tab -->
+                            <img src="img/console.png" alt="Image" class="img-fluid">
+                            Console
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="#2a" data-toggle="tab" class="tm-tab-link">
+                            <img src="img/computer.png" alt="Image" class="img-fluid">
+                            Computer
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="#3a" data-toggle="tab" class="tm-tab-link">
+                            <img src="img/mobile.png" alt="Image" class="img-fluid">
+                            Mobile
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="#4a" data-toggle="tab" class="tm-tab-link">
+                            <img src="img/other.png" alt="Image" class="img-fluid">
+                            Other Device
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content clearfix">
+                	
+                    <!-- Tab 1 -->
+                    <div class="fade show active" id="1a">
+                    <?php
+		                                require_once "koneksi.php";
 
-            <section class="p-5 tm-container-outer tm-bg-gray">            
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 mx-auto tm-about-text-wrap text-center">                        
-                            <h2 class="text-uppercase mb-4">Your <strong>Journey</strong> is our priority</h2>
-                            <p class="mb-4">Nullam auctor, sapien sit amet lacinia euismod, lorem magna lobortis massa, in tincidunt mi metus quis lectus. Duis nec lobortis velit. Vivamus id magna vulputate, tempor ante eget, tempus augue. Maecenas ultricies neque magna.</p>
-                            <a href="#" class="text-uppercase btn-primary tm-btn">Continue explore</a>                              
-                        </div>
+                                	 	  	$stmt = $db->prepare("SELECT * FROM seri_game ORDER BY id_game aSC");
+	                                		$stmt->execute();
+	        		                        $result = $stmt->fetchAll();
+
+  
+                                           if(!empty($result)) {    
+	                                          foreach($result as $row){	
+                                                $id_game = $row["id_game"];
+                                                $nama_game = $row["nama_game"];
+                                                $alur = $row["alur"];
+                                                $photo_game = 'img/'.$row["photo_game"];
+                                                $device = $row["kode_device"];
+                                                $release = $row["tahun_release"];
+
+                                    ?>
+
+                        <section class="tm-slideshow-section">
+                            <div class="tm-slideshow">
+                                    <img src= <?php echo $photo_game ?> alt="Image">
+                            </div>
+                            <div class="tm-slideshow-description tm-bg-primary">
+                                <h2 class=""><?php echo $nama_game ?></h2>
+                                <p>Aenean in lacus nec dolor fermentum congue. Maecenas ut velit pharetra, pharetra tortor sit amet, vulputate sem. Vestibulum mi nibh, faucibus ac eros id, sagittis tincidunt velit. Proin interdum ullamcorper faucibus. Ut mi nunc, sollicitudin non pulvinar id, sagittis eget diam.</p>
+                                <a href="#" class="text-uppercase tm-btn tm-btn-white tm-btn-white-primary">Continue Reading</a>
+                            </div>
+                        </section>   
+                                              <?php } } ?>
+                        
+                        <section class="clearfix tm-slideshow-section tm-slideshow-section-reverse">
+
+                            <div class="tm-right tm-slideshow tm-slideshow-highlight">
+                                <img src="img/tm-img-02.jpg" alt="Image">
+                            </div> 
+
+                            <div class="tm-slideshow-description tm-slideshow-description-left tm-bg-highlight">
+                                <h2 class="">Asia's most popular places</h2>
+                                <p>Vivamus in massa ullamcorper nunc auctor accumsan ac at arcu. Donec sagittis mattis pharetra. Proin commodo, ante et volutpat pulvinar, arcu arcu ullamcorper diam, id maximus sem tellus id sem. Suspendisse eget rhoncus diam. Fusce urna elit, porta nec ullamcorper id.</p>
+                                <a href="#" class="text-uppercase tm-btn tm-btn-white tm-btn-white-highlight">Continue Reading</a>
+                            </div>                        
+
+                        </section>     
+                    </div> <!-- tab-pane -->
+                    
+                    <!-- Tab 2 -->
+                    <div class="fade" id="2a">
+
+                        <div class="tm-recommended-place-wrap">
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">South Resort Hotel</h3>
+                                    <p class="tm-text-highlight">South One</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$220</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>                        
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Aenean ac ante nec diam</h3>
+                                    <p class="tm-text-highlight">South Second</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$230</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Suspendisse nec dapibus</h3>
+                                    <p class="tm-text-highlight">South Third</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$240</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Aliquam viverra mi at nisl</h3>
+                                    <p class="tm-text-highlight">South Fourth</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$250</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>    
+                        </div>                        
+
+                        <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
+                    </div> <!-- tab-pane -->          
+                    
+                    <!-- Tab 3 -->     
+                    <div class="fade" id="3a">
+
+                        <div class="tm-recommended-place-wrap">
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Europe Hotel</h3>
+                                    <p class="tm-text-highlight">Venecia, Italy</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$330</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>                        
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">In viverra enim turpis</h3>
+                                    <p class="tm-text-highlight">Paris, France</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$340</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Volutpat pellentesque</h3>
+                                    <p class="tm-text-highlight">Barcelona, Spain</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$350</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Grand Resort Pasha</h3>
+                                    <p class="tm-text-highlight">Istanbul, Turkey</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$360</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>    
+                        </div>                        
+
+                        <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
+                    </div> <!-- tab-pane -->
+                    
+                    <!-- Tab 4 -->
+                    <div class="fade" id="4a">
+                    <!-- Current Active Tab WITH "show active" classes in DIV tag -->
+                        <div class="tm-recommended-place-wrap">
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Asia Resort Hotel</h3>
+                                    <p class="tm-text-highlight">Singapore</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$440</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>                        
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Nullam eget est a nisl</h3>
+                                    <p class="tm-text-highlight">Yangon, Myanmar</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <div id="preload-hover-img"></div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$450</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Proin interdum ullamcorper</h3>
+                                    <p class="tm-text-highlight">Bangkok, Thailand</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$460</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>
+
+                            <div class="tm-recommended-place">
+                                <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                                <div class="tm-recommended-description-box">
+                                    <h3 class="tm-recommended-title">Lorem ipsum dolor sit</h3>
+                                    <p class="tm-text-highlight">Vientiane, Laos</p>
+                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
+                                </div>
+                                <a href="#" class="tm-recommended-price-box">
+                                    <p class="tm-recommended-price">$470</p>
+                                    <p class="tm-recommended-price-link">Continue Reading</p>
+                                </a>
+                            </div>    
+                        </div>                        
+
+                        <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
+                    </div> <!-- tab-pane -->
+                </div>
+            </div>
+
+            <div class="tm-container-outer tm-position-relative" id="tm-section-4">
+                <div id="google-map"></div>
+                <form action="index.html" method="post" class="tm-contact-form">
+                    <div class="form-group tm-name-container">
+                        <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Name"  required/>
                     </div>
-                </div>            
-            </section>
-            
+                    <div class="form-group tm-email-container">
+                        <input type="email" id="contact_email" name="contact_email" class="form-control" placeholder="Email"  required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="contact_subject" name="contact_subject" class="form-control" placeholder="Subject"  required/>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="contact_message" name="contact_message" class="form-control" rows="9" placeholder="Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary tm-btn-primary tm-btn-send text-uppercase">Send Message Now</button>
+                </form>
+            </div> <!-- .tm-container-outer -->
+
+            <footer class="tm-container-outer">
+                <p class="mb-0">Copyright © <span class="tm-current-year">2018</span> Your Company 
+                    
+                . Designed by <a rel="nofollow" href="http://www.google.com/+templatemo" target="_parent">Template Mo</a></p>
+            </footer>
+        
+        
+        </div>
     </div> <!-- .main-content -->
 
     <!-- load JS files -->

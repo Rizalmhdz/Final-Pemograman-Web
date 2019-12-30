@@ -1,3 +1,47 @@
+
+<?php
+session_start();
+include("koneksi.php");
+
+if(isset($_POST['login'])){
+	try
+	{
+	
+        $username = $_POST['username']; //get "update_id" from index.php page through anchor tag operation and store in "$id" variable
+        $pass = $_POST['password'];
+        $select_stmt = $db->prepare('SELECT * FROM akun WHERE username =:id and pw =:pass'); //sql select query
+        $select_stmt->bindParam(':id',$username);
+        $select_stmt->bindParam(':pass',$pass);
+        $select_stmt->execute(); 
+
+        $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+
+            if(!empty($row)) { 
+                
+        $_SESSION['username'] = $username;
+        $_SESSION['user'] = $row['id'];
+        $insertMsg="login berhasil";
+        echo "<script type='text/javascript'>window.location.href = 'index.php' ; </script>";
+
+
+        }
+        else if ($_POST['username'] =="" || $_POST['password'] == ""){
+            $errorMsg="masukkan username dan password!";
+
+        }
+
+        else {
+            $errorMsg="Username atau password yang anda masukkan salah!";
+
+        }
+    }
+    catch(PDOException $e)
+    {
+        $e->getMessage();
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +49,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Home</title>
+    <title>Assassin's Creed</title>
+<!-- 
+Journey Template 
+http://www.templatemo.com/tm-511-journey
+-->
     <!-- load stylesheets -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
@@ -13,7 +61,8 @@
     <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
     <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-    <link rel="stylesheet" type="text/css" href="css/Home.css"/>
+    <link rel="stylesheet" type="text/css" href="css/Home.css"/>                             <!-- Templatemo style -->
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
             <!--[if lt IE 9]>
@@ -42,13 +91,13 @@
                                     <a class="nav-link active" href="#top">Home <span class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-2">Top Destinations</a>
+                                    <a class="nav-link" href="#tm-section-2">Walkthrough</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-3">Recommended Places</a>
+                                    <a class="nav-link" href="#tm-section-3">price</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-4">Contact Us</a>
+                                    <a class="nav-link" href="#tm-section-4">Logout</a>
                                 </li>
                             </ul>
                         </div>                            
@@ -59,7 +108,62 @@
 
         <div class="tm-page-wrap mx-auto">
             <section class="tm-banner">
-                <div class="tm-container-outer tm-banner-bg">               
+                <div class="tm-container-outer tm-banner-bg">
+                    <div class="container">
+
+                        <div class="row tm-banner-row tm-banner-row-header">
+                            <div class="col-xs-12">
+                                <div class="tm-banner-header">
+                                    <h1 class="text-uppercase tm-banner-title">Let's begin</h1>
+                                    <img src="img/dots-3.png" alt="Dots">
+                                    <p class="tm-banner-subtitle">We assist you to get a great gameplay.</p>
+                                    <a href="javascript:void(0)" class="tm-down-arrow-link"><i class="fa fa-2x fa-angle-down tm-down-arrow"></i></a>       
+                                </div>    
+                            </div>  <!-- col-xs-12 -->                      
+                        </div> <!-- row -->
+                        
+
+                        <div class="row tm-banner-row" id="tm-section-search">
+                            <form method="POST" class="tm-search-form tm-section-pad-2">
+                            <div class="form-row tm-search-form-row">  <?php
+                            if(isset($errorMsg))
+                            {
+                                ?>
+                                <div class="alert alert-danger">
+                                    <strong>UPS! <?php echo $errorMsg; ?></strong>
+                                </div>
+                                <?php
+                            }
+                            if(isset($insertMsg)){
+                            ?>
+                                <div class="alert alert-success">
+                                    <strong>SUCCESS! <?php echo $insertMsg; ?></strong>
+                                </div>
+                            <?php
+                            }
+                            ?> 
+                            </div>
+                                <div class="form-row tm-search-form-row">                                
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
+                                        <label for="inputCity">Username</label>
+                                        <input name="username" type="text" class="form-control" placeholder="Type your username...">
+                                    </div>
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
+                                        <label for="inputCity">Password</label>
+                                        <input name="password" type="password" class="form-control" placeholder="Type your password...">
+                                    </div>
+                                    
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
+                                    </div>
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
+                                        <button name="login" type="submit" class="btn btn-primary tm-btn tm-btn-search text-uppercase" value="login">Login</button>
+                                    </div>
+                                </div>                              
+                            </form>                             
+
+                        </div> <!-- row -->
+                        <div class="tm-banner-overlay"></div>
+                    </div>  <!-- .container -->                   
                 </div>     <!-- .tm-container-outer -->                 
             </section>
 
@@ -73,98 +177,8 @@
                         </div>
                     </div>
                 </div>            
-            </section>      
-            <div class="tm-container-outer" id="tm-section-3">
-                <div class="tab-content clearfix">
-                	
-                    <!-- Tab 1 -->
-                    <div class="tab-pane fade show active" id="1a">
-                    <!-- Current Active Tab WITH "show active" classes in DIV tag -->
-                        <div class="tm-recommended-place-wrap">
-                            <div class="tm-recommended-place">
-                                <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                                <div class="tm-recommended-description-box">
-                                    <h3 class="tm-recommended-title">Asia Resort Hotel</h3>
-                                    <p class="tm-text-highlight">Singapore</p>
-                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
-                                </div>
-                                <a href="#" class="tm-recommended-price-box">
-                                    <p class="tm-recommended-price">$440</p>
-                                    <p class="tm-recommended-price-link">Continue Reading</p>
-                                </a>                        
-                            </div>
-
-                            <div class="tm-recommended-place">
-                                <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                                <div class="tm-recommended-description-box">
-                                    <h3 class="tm-recommended-title">Nullam eget est a nisl</h3>
-                                    <p class="tm-text-highlight">Yangon, Myanmar</p>
-                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
-                                </div>
-                                <div id="preload-hover-img"></div>
-                                <a href="#" class="tm-recommended-price-box">
-                                    <p class="tm-recommended-price">$450</p>
-                                    <p class="tm-recommended-price-link">Continue Reading</p>
-                                </a>
-                            </div>
-
-                            <div class="tm-recommended-place">
-                                <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                                <div class="tm-recommended-description-box">
-                                    <h3 class="tm-recommended-title">Proin interdum ullamcorper</h3>
-                                    <p class="tm-text-highlight">Bangkok, Thailand</p>
-                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
-                                </div>
-                                <a href="#" class="tm-recommended-price-box">
-                                    <p class="tm-recommended-price">$460</p>
-                                    <p class="tm-recommended-price-link">Continue Reading</p>
-                                </a>
-                            </div>
-
-                            <div class="tm-recommended-place">
-                                <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                                <div class="tm-recommended-description-box">
-                                    <h3 class="tm-recommended-title">Lorem ipsum dolor sit</h3>
-                                    <p class="tm-text-highlight">Vientiane, Laos</p>
-                                    <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>   
-                                </div>
-                                <a href="#" class="tm-recommended-price-box">
-                                    <p class="tm-recommended-price">$470</p>
-                                    <p class="tm-recommended-price-link">Continue Reading</p>
-                                </a>
-                            </div>    
-                        </div>                        
-
-                        <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
-                    </div> <!-- tab-pane -->
-                </div>
-            </div>
-
-            <div class="tm-container-outer tm-position-relative" id="tm-section-4">
-                <div id="google-map"></div>
-                <form action="index.html" method="post" class="tm-contact-form">
-                    <div class="form-group tm-name-container">
-                        <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Name"  required/>
-                    </div>
-                    <div class="form-group tm-email-container">
-                        <input type="email" id="contact_email" name="contact_email" class="form-control" placeholder="Email"  required/>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="contact_subject" name="contact_subject" class="form-control" placeholder="Subject"  required/>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="contact_message" name="contact_message" class="form-control" rows="9" placeholder="Message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary tm-btn-primary tm-btn-send text-uppercase">Send Message Now</button>
-                </form>
-            </div> <!-- .tm-container-outer -->
-
-            <footer class="tm-container-outer">
-                <p class="mb-0">Copyright © <span class="tm-current-year">2018</span> Your Company 
-                    
-                . Designed by <a rel="nofollow" href="http://www.google.com/+templatemo" target="_parent">Template Mo</a></p>
-            </footer>
-        </div>
+            </section>
+            
     </div> <!-- .main-content -->
 
     <!-- load JS files -->
