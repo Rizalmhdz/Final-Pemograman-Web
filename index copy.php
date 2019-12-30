@@ -29,7 +29,7 @@ http://www.templatemo.com/tm-511-journey
       </head>
 
       <body>
-        <div class="tm-main-content" id="top">
+      <div class="tm-main-content" id="top">
             <div class="tm-top-bar-bg"></div>    
             <div class="tm-top-bar" id="tm-top-bar">
                 <div class="container">
