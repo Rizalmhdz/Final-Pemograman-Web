@@ -2,7 +2,7 @@
     $db_host="localhost"; //localhost server 
     $db_user="root"; //database username
     $db_password=""; //database password   
-    $db_name="wisata"; //database name
+    $db_name="assassins_creed"; //database name
 
     try
     {

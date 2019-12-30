@@ -1,3 +1,26 @@
+<?php
+
+    require_once "koneksi.php";
+    session_start();
+    if(isset($_REQUEST['display_id']))
+    {
+        try
+        {
+            $id = $_REQUEST['display_id']; //get "display_id" from index.php page through anchor tag operation and store in "$id" variable
+            $select_stmt = $db->prepare('SELECT * FROM seri_game WHERE id_game =:id'); //sql select query
+            $select_stmt->bindParam(':id',$id);
+            $select_stmt->execute(); 
+            $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+            extract($row);
+        }
+        catch(PDOException $e)
+        {
+            $e->getMessage();
+        }
+        
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,81 +101,6 @@ http://www.templatemo.com/tm-511-journey
                                 </div>    
                             </div>  <!-- col-xs-12 -->                      
                         </div> <!-- row -->
-                        <div class="row tm-banner-row" id="tm-section-search">
-
-                            <form action="index.html" method="get" class="tm-search-form tm-section-pad-2">
-                                <div class="form-row tm-search-form-row">                                
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                                        <label for="inputCity">Choose Your Destination</label>
-                                        <input name="destination" type="text" class="form-control" id="inputCity" placeholder="Type your destination...">
-                                    </div>
-                                    <div class="form-group tm-form-group tm-form-group-1">                                    
-                                        <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
-                                            <label for="inputRoom">How many rooms?</label>
-                                            <select name="room" class="form-control tm-select" id="inputRoom">
-                                                <option value="1" selected>1 Room</option>
-                                                <option value="2">2 Rooms</option>
-                                                <option value="3">3 Rooms</option>
-                                                <option value="4">4 Rooms</option>
-                                                <option value="5">5 Rooms</option>
-                                                <option value="6">6 Rooms</option>
-                                                <option value="7">7 Rooms</option>
-                                                <option value="8">8 Rooms</option>
-                                                <option value="9">9 Rooms</option>
-                                                <option value="10">10 Rooms</option>
-                                            </select>                                        
-                                        </div>
-                                        <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">                                       
-                                            <label for="inputAdult">Adult</label>     
-                                            <select name="adult" class="form-control tm-select" id="inputAdult">
-                                                <option value="1" selected>1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                            </select>                                        
-                                        </div>
-                                        <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-
-                                            <label for="inputChildren">Children</label>                                            
-                                            <select name="children" class="form-control tm-select" id="inputChildren">
-                                            	<option value="0" selected>0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                            </select>                                        
-                                        </div>
-                                    </div>
-                                </div> <!-- form-row -->
-                                <div class="form-row tm-search-form-row">
-
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                                        <label for="inputCheckIn">Check In Date</label>
-                                        <input name="check-in" type="text" class="form-control" id="inputCheckIn" placeholder="Check In">
-                                    </div>
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                                        <label for="inputCheckOut">Check Out Date</label>
-                                        <input name="check-out" type="text" class="form-control" id="inputCheckOut" placeholder="Check Out">
-                                    </div>
-                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                                        <label for="btnSubmit">&nbsp;</label>
-                                        <button type="submit" class="btn btn-primary tm-btn tm-btn-search text-uppercase" id="btnSubmit">Check Availability</button>
-                                    </div>
-                                </div>                              
-                            </form>                             
-
-                        </div> <!-- row -->
                         <div class="tm-banner-overlay"></div>
                     </div>  <!-- .container -->                   
                 </div>     <!-- .tm-container-outer -->                 
@@ -189,20 +137,50 @@ http://www.templatemo.com/tm-511-journey
                 	
                     <!-- Tab 1 -->
                     <div class="fade show active" id="1a">
+                    <?php
+		                                require_once "koneksi.php";
+
+                                	 	  	$stmt = $db->prepare("SELECT * FROM seri_game ORDER BY id_game aSC");
+	                                		$stmt->execute();
+	        		                        $result = $stmt->fetchAll();
+
+  
+                                           if(!empty($result)) {    
+	                                          foreach($result as $row){	
+                                                $id_game = $row["id_game"];
+                                                $nama_game = $row["nama_game"];
+                                                $alur = $row["alur"];
+                                                $photo_game = 'img/'.$row["photo_game"];
+                                                $device = $row["kode_device"];
+                                                $release = $row["tahun_release"];
+
+                                    ?>
+
                         <section class="tm-slideshow-section">
                             <div class="tm-slideshow">
-                                <img src="img/tm-img-01.jpg" alt="Image">
-                                <img src="img/tm-img-02.jpg" alt="Image">
-                                <img src="img/tm-img-03.jpg" alt="Image">    
+                                    <img src= <?php echo $photo_game ?> alt="Image">
                             </div>
                             <div class="tm-slideshow-description tm-bg-primary">
-                                <h2 class="">Europe's most visited places</h2>
+                                <h2 class=""><?php echo $nama_game ?></h2>
                                 <p>Aenean in lacus nec dolor fermentum congue. Maecenas ut velit pharetra, pharetra tortor sit amet, vulputate sem. Vestibulum mi nibh, faucibus ac eros id, sagittis tincidunt velit. Proin interdum ullamcorper faucibus. Ut mi nunc, sollicitudin non pulvinar id, sagittis eget diam.</p>
                                 <a href="#" class="text-uppercase tm-btn tm-btn-white tm-btn-white-primary">Continue Reading</a>
                             </div>
-                        </section>                     
+                        </section>   
+                                              <?php } } ?>
+                        
+                        <section class="clearfix tm-slideshow-section tm-slideshow-section-reverse">
 
-                        <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
+                            <div class="tm-right tm-slideshow tm-slideshow-highlight">
+                                <img src="img/tm-img-02.jpg" alt="Image">
+                            </div> 
+
+                            <div class="tm-slideshow-description tm-slideshow-description-left tm-bg-highlight">
+                                <h2 class="">Asia's most popular places</h2>
+                                <p>Vivamus in massa ullamcorper nunc auctor accumsan ac at arcu. Donec sagittis mattis pharetra. Proin commodo, ante et volutpat pulvinar, arcu arcu ullamcorper diam, id maximus sem tellus id sem. Suspendisse eget rhoncus diam. Fusce urna elit, porta nec ullamcorper id.</p>
+                                <a href="#" class="text-uppercase tm-btn tm-btn-white tm-btn-white-highlight">Continue Reading</a>
+                            </div>                        
+
+                        </section>     
                     </div> <!-- tab-pane -->
                     
                     <!-- Tab 2 -->
